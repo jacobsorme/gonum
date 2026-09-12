@@ -1,3 +1,7 @@
+// Copyright ©2020 The Gonum Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package cluster
 
 import (
@@ -40,7 +44,8 @@ func TestKmeans2D(t *testing.T) {
 	}
 	expectedCenters := [][2]float64{{3, 3}, {3, -3}, {-3, 3}}
 	iter := 5
-	cent, clust := Kmeans2D(len(expectedCenters), data, Config{Seed1: 123, Seed2: 1234, Iter: &iter})
+	var seed uint64 = 123
+	cent, clust := Kmeans2D(len(expectedCenters), data, Config{Seed: &seed, Iter: &iter})
 	if len(cent) != len(clust) {
 		t.Error("kmeans invalid dimensions")
 	}
@@ -123,8 +128,9 @@ func TestKmeans2DVisual(t *testing.T) {
 			}
 			clust := [][][2]float64{}
 			centroidIterations := make([][][2]float64, iter)
+			var seed uint64 = 12
 			for i := range iter {
-				cent, c := Kmeans2D(k, data, Config{Seed1: 12, Seed2: 123, Iter: &i})
+				cent, c := Kmeans2D(k, data, Config{Seed: &seed, Iter: &i})
 				centroidIterations[i] = cent
 				clust = c
 			}
